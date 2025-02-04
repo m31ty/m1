@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Login</title>
+	<style>
+		body { 
+			background-color: #413b17;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			height: 100vh;
+			margin: 0;
+		}
+		.login-box {
+			background: #504925;
+			padding: 30px;
+			border-radius: 10px;
+			border: 2px solid #6b6540;
+			width: 300px;
+			box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+		}
+		h2 {
+			color: #f4d03f;
+			text-align: center;
+			margin-bottom: 25px;
+		}
+		input {
+			width: 100%;
+			padding: 12px;
+			margin: 10px 0;
+			background: #413b17;
+			border: 1px solid #6b6540;
+			color: #f4ebfc;
+			border-radius: 4px;
+			font-size: 14px;
+		}
+		button {
+			width: 100%;
+			padding: 12px;
+			background: #6b6540;
+			border: none;
+			color: #f4ebfc;
+			cursor: pointer;
+			border-radius: 4px;
+			font-size: 16px;
+			margin-top: 15px;
+			transition: background 0.3s;
+		}
+		button:hover {
+			background: #7d7750;
+		}
+		.error {
+			color: #ff5555;
+			font-size: 14px;
+			text-align: center;
+			margin-top: 10px;
+		}
+	</style>
+</head>
+<body>
+	<div class="login-box">
+		<h2>🔒 Media Server Login</h2>
+		<form method="post">
+			<input type="text" name="username" placeholder="Username" required autofocus>
+			<input type="password" name="password" placeholder="Password" required>
+			<button type="submit">Login</button>
+			{% if error %}
+			<div class="error">{{ error }}</div>
+			{% endif %}
+		</form>
+	</div>
+</body>
+</html>
