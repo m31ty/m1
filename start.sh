@@ -5,7 +5,7 @@ apt update && apt install -y ffmpeg
 
 pip install -r requirements.txt
 
-URL="https://drive.usercontent.google.com/download?id=1gcmz3wDf2WkEfD_eAmvGHz0o940E3RGJ&confirm=t&uuid=732ba3b9-38dd-47da-b8f3-b5a621eac06d&at=AIrpjvOOuxT2yvn6NDga3MD5Syjf%3A1738728329982"
+URL="https://drive.usercontent.google.com/download?id=1_iE7rw2YXrM-yEL64NfWgxggzNo5HAAP&export=download&authuser=0&confirm=t&uuid=2e3f5d80-ebf2-45b3-86c3-36359123b7f2&at=AIrpjvOsCVliS5jie6aGtF5swjpx%3A1738730344270"
 
 # 保存先のファイル名
 ZIP_FILE="poop.zip"
