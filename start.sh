@@ -9,13 +9,6 @@ pip install -r requirements.txt
 #combine_split_files.sh
 set -e
 
-#.envファイルの読み込み
-if [ -f .env ]; then
-	source .env
-else
-	echo ".env file not found!"
-	exit 1
-fi
 
 #必要なツールのチェック
 command -v jq >/dev/null 2>&1 || {
