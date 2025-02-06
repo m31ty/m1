@@ -13,7 +13,7 @@ fi
 
 echo "DL complete."
 ls
-unzip poop.zip
+unzip -d poop poop.zip
 
 # poopディレクトリの中身をmoviesに移動
 mkdir -p movies
