@@ -17,6 +17,7 @@ unzip poop.zip
 
 # poopディレクトリの中身をmoviesに移動
 mkdir -p movies
+ls
 cp -r poop/. movies/
 
 # 不要なファイルを削除
