@@ -6,12 +6,54 @@ apt update && apt install -y ffmpeg
 pip install -r requirements.txt
 
 
-wget -O poop.zip "https://uc279c65fa251cda0e9a9b21c90d.dl.dropboxusercontent.com/cd/0/get/CjgB5vXhZFZPDi6TPcqv_bPq0UHlVozuVXaqxUjyvNRy6_xJGsUBBFrMDyU4-W0VVsdzq9-zyFcKTiwd7s1BJJ9hoqt3PEnhu-wPfK7Xo9lcElKBfNuK9laxiBbuF4eeAd8-a37rE4Dp0TVg3tinAzQgd8CNZVEaSlDBIZziOkauFA/file?_download_id=3023850992775234462463448572417535957188091852228673603674103094&_log_download_success=1#"
-echo "DL complete."
+#combine_split_files.sh
+set -e
+
+#.envファイルの読み込み
+if [ -f .env ]; then
+	source .env
+else
+	echo ".env file not found!"
+	exit 1
+fi
+
+#必要なツールのチェック
+command -v jq >/dev/null 2>&1 || {
+	echo "jq not found! Installing..."
+	sudo apt install -y jq
+}
+
+#GitHub API設定
+API_URL="https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/releases/tags/${TAG_NAME}"
+OUTPUT_FILE="poop.zip"
+
+echo "=== リリース情報を取得しています ==="
+release_info=$(curl -sH "Authorization: token ${GITHUB_TOKEN}" "${API_URL}")
+
+echo "=== 分割ファイルをダウンロードしています ==="
+echo "${release_info}" | jq -r '.assets[] | select(.name | startswith("poop.zip_part_")) | .browser_download_url' | sort -V | xargs -n1 wget -q --show-progress
+
+echo "=== ファイルを結合しています ==="
+if ls poop.zip_part_* 1> /dev/null 2>&1; then
+	cat poop.zip_part_* > "${OUTPUT_FILE}"
+	echo "結合完了: ${OUTPUT_FILE}"
+	
+	#整合性チェック(任意)
+	echo "ファイルサイズチェック:"
+	du -sh "${OUTPUT_FILE}"
+else
+	echo "分割ファイルが見つかりませんでした"
+	exit 1
+fi
+
+echo "=== 分割ファイルを削除しています ==="
+rm -v poop.zip_part_*
+echo "ls start."
 ls
+echo "ls done."
+
 unzip poop.zip
 
-# poopディレクトリの中身をmoviesに移動
 mkdir -p movies
 cp -r poop/. movies/
 
