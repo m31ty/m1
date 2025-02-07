@@ -10,7 +10,7 @@ if [ $? -ne 0 ]; then
   echo "first.py の実行中にエラーが発生しました。スクリプトを終了します。"
   exit 1
 fi
-
+ls
 echo "DL complete."
 
 unzip -d comics comics.zip
