@@ -6,46 +6,55 @@ load_dotenv()
 GITHUB_TOKEN = os.getenv('GITHUB_TOKEN')
 REPO_OWNER = os.getenv('REPO_OWNER')
 REPO_NAME = os.getenv('REPO_NAME')
-TAG_NAME = "v1.0"
-print(REPO_NAME)
 
 HEADERS = {
-	"Authorization": f"token {GITHUB_TOKEN}",
-	"Accept": "application/vnd.github.v3+json"
+    "Authorization": f"token {GITHUB_TOKEN}",
+    "Accept": "application/vnd.github.v3+json"
 }
 
-#リリース情報を取得
-release_url = f"https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/releases/tags/{TAG_NAME}"
-response = requests.get(release_url, headers=HEADERS)
-response.raise_for_status()
+def download_and_combine(tag_name, base_filename):
+    """
+    指定されたタグの分割ファイルをダウンロードし、結合する関数。
+    """
+    print(f"Processing files for tag: {tag_name}, base filename: {base_filename}")
 
-#分割ファイルのアセットを抽出してソート
-assets = response.json()['assets']
-parts = [a for a in assets if a['name'].startswith('poop.zip_part_')]
-parts.sort(key=lambda x: int(x['name'].split('_part_')[-1]))
+    release_url = f"https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/releases/tags/{tag_name}"
+    response = requests.get(release_url, headers=HEADERS)
+    response.raise_for_status()
 
-#ファイルをダウンロード
-downloaded_files = []
-for part in parts:
-	url = part['browser_download_url']
-	filename = part['name']
-	print(f"Downloading {filename}...")
-	
-	response = requests.get(url, headers=HEADERS)
-	response.raise_for_status()
-	
-	with open(filename, 'wb') as f:
-		f.write(response.content)
-	downloaded_files.append(filename)
+    assets = response.json()['assets']
+    parts = [a for a in assets if a['name'].startswith(f"{base_filename}_part_")]
+    parts.sort(key=lambda x: int(x['name'].split('_part_')[-1]))
 
-#ファイルを結合
-output_filename = 'poop.zip'
-with open(output_filename, 'wb') as outfile:
-	for part_file in downloaded_files:
-		with open(part_file, 'rb') as infile:
-			outfile.write(infile.read())
+    downloaded_files = []
+    for part in parts:
+        url = part['browser_download_url']
+        filename = part['name']
+        print(f"Downloading {filename}...")
 
-print(f"Successfully combined files into {output_filename}")
+        response = requests.get(url, headers=HEADERS)
+        response.raise_for_status()
 
-for part_file in downloaded_files:
-	os.remove(part_file)
+        with open(filename, 'wb') as f:
+            f.write(response.content)
+        downloaded_files.append(filename)
+
+    output_filename = base_filename
+    with open(output_filename, 'wb') as outfile:
+        for part_file in downloaded_files:
+            with open(part_file, 'rb') as infile:
+                outfile.write(infile.read())
+
+    print(f"Successfully combined files into {output_filename}")
+
+    for part_file in downloaded_files:
+        os.remove(part_file)
+
+# 例：poop.zip (v1.0) を処理
+download_and_combine("v1.0", "poop.zip")
+
+# 例：comics.zip (v2.0) を処理
+download_and_combine("v2.0", "comics.zip")
+
+# 必要であれば、他のファイルも同様に処理できる
+# download_and_combine("v3.0", "another_file.zip")
