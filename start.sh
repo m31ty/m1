@@ -12,16 +12,14 @@ if [ $? -ne 0 ]; then
 fi
 
 echo "DL complete."
-ls
-unzip -d poop poop.zip
 
-# poopディレクトリの中身をmoviesに移動
-mkdir -p movies
+unzip -d comics comics.zip
 ls
-cp -r poop/. movies/
+
+unzip -d movies poop.zip
 
 # 不要なファイルを削除
-rm -rf poop.zip poop
+rm -rf poop.zip comics.zip
 echo "delete file."
 df -h --total
 
