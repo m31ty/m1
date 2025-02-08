@@ -12,9 +12,13 @@ app.config['MOVIE_FOLDER'] = 'movies'
 app.config['COMICS_FOLDER'] = 'comics'
 app.config['THUMBNAIL_FOLDER'] = 'static/thumbnails'
 
-#簡易ユーザーデータベース(実際にはDBを使用)
+from dotenv import load_dotenv
+
+load_dotenv()
+USNM = os.getenv('USNM')
+PSWD = os.getenv('PSWD')
 users = {
-	'admin': generate_password_hash('Endurance0408')
+	USNM: generate_password_hash(PSWD)
 }
 
 def login_required(f):
