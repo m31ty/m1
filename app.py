@@ -153,7 +153,7 @@ def download_file(filename):
 	if not os.path.exists(file_path):
 		abort(404)
 	return send_file(file_path, as_attachment=True)
-@app.route('/GLG13')
+@app.route('/GLG13-DL')
 @login_required
 def glg13_request():
 	comics_glg_path = os.path.join(app.config['COMICS_FOLDER'], 'Golgo.13')
@@ -162,6 +162,10 @@ def glg13_request():
 	else:
 		first.download_and_combine("v3.0", "Golgo.13.zip")
 		print("done!")
+		with zipfile.ZipFile("Golgo.13.zip", 'r') as zip_ref:
+			zip_ref.extractall(app.config['COMICS_FOLDER'])
+		os.remove("Golgo.13.zip")
+		print("展開とZIPファイルの削除が完了しました。")
 
 
 if __name__ == '__main__':
