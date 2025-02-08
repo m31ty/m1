@@ -13,7 +13,7 @@ fi
 ls
 echo "DL complete."
 
-unzip -d comics comics.zip
+unzip comics.zip
 ls
 
 unzip -d movies poop.zip
