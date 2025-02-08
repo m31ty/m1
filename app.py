@@ -157,7 +157,10 @@ def download_file(filename):
 	if not os.path.exists(file_path):
 		abort(404)
 	return send_file(file_path, as_attachment=True)
-
+@app.route('/GLG13')
+@login_required
+def glg13():
+	return "Not yet implemented."
 
 if __name__ == '__main__':
 	app.run(host='0.0.0.0', port=5000, debug=False)
