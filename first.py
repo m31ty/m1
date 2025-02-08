@@ -52,7 +52,7 @@ def download_and_combine(tag_name, base_filename):
 
 # 例：poop.zip (v1.0) を処理
 download_and_combine("v1.0", "poop.zip")
-
+print("DL poop.zip finished")
 # 例：comics.zip (v2.0) を処理
 download_and_combine("v2.0", "comics.zip")
 
