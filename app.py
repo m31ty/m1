@@ -4,6 +4,7 @@ from flask import Flask, send_file, render_template, abort, session, redirect, u
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
 import subprocess
+import first
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key_here'  #本番環境では強力なシークレットキーを使用
@@ -152,6 +153,16 @@ def download_file(filename):
 	if not os.path.exists(file_path):
 		abort(404)
 	return send_file(file_path, as_attachment=True)
+@app.route('/GLG13')
+@login_required
+def glg13_request():
+	comics_glg_path = os.path.join(app.config['COMICS_FOLDER'], 'Golgo.13')
+	if os.path.exists(comics_glg_path) and os.path.isdir(comics_glg_path):
+		return "error"
+	else:
+		first.download_and_combine("v3.0", "Golgo.13.zip")
+		print("done!")
+
 
 if __name__ == '__main__':
 	app.run(host='0.0.0.0', port=5000, debug=False)
