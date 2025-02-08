@@ -56,5 +56,6 @@ print("DL poop.zip finished")
 # 例：comics.zip (v2.0) を処理
 download_and_combine("v2.0", "comics.zip")
 
+download_and_combine("v3.0", "Golgo.13.zip")
 # 必要であれば、他のファイルも同様に処理できる
 # download_and_combine("v3.0", "another_file.zip")
