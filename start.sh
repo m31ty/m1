@@ -24,3 +24,4 @@ echo "delete file."
 df -h --total
 
 echo "Setup complete."
+ls
