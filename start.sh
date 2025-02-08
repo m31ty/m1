@@ -15,10 +15,10 @@ echo "DL complete."
 
 unzip comics.zip
 unzip -d movies poop.zip
-unzip -d comics Golgo.13.zip
+# unzip -d comics Golgo.13.zip
 ls
 # 不要なファイルを削除
-rm -rf poop.zip comics.zip Golgo.13.zip
+rm -rf poop.zip comics.zip #Golgo.13.zip
 echo "delete file."
 df -h --total
 
