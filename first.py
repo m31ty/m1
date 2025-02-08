@@ -2,7 +2,7 @@ import requests
 import os
 from dotenv import load_dotenv
 import concurrent.futures
-from tqdm import tqdm  #進捗バー表示用
+from tqdm import tqdm
 
 load_dotenv()
 GITHUB_TOKEN = os.getenv('GITHUB_TOKEN')
@@ -15,11 +15,10 @@ HEADERS = {
 }
 
 def download_part(part):
-	"""分割ファイルをダウンロードする"""
 	url = part['browser_download_url']
 	filename = part['name']
 	print(f"Downloading {filename}...")
-	response = requests.get(url, headers=HEADERS, stream=True)  #ストリーミングでDL
+	response = requests.get(url, headers=HEADERS, stream=True)
 	response.raise_for_status()
 	total_size_in_bytes = int(response.headers.get('content-length', 0))
 	block_size = 1024  #1 Kibibyte
@@ -36,22 +35,18 @@ def download_part(part):
 	return filename
 
 def combine_files(downloaded_files, output_filename):
-	"""ダウンロードした分割ファイルを結合する"""
 	with open(output_filename, 'wb') as outfile:
 		for part_file in downloaded_files:
 			with open(part_file, 'rb') as infile:
 				while True:
-					chunk = infile.read(4096 * 1024) #4MB Read
+					chunk = infile.read(4096 * 1024)
 					if not chunk:
 						break
 					outfile.write(chunk)
-			os.remove(part_file)  #結合後、分割ファイルを削除
+			os.remove(part_file)
 	print(f"Successfully combined files into {output_filename}")
 
 def download_and_combine(tag_name, base_filename):
-	"""
-	指定されたタグのリリースから、分割されたファイルをダウンロードし、結合する。
-	"""
 	print(f"Processing files for tag: {tag_name}, base filename: {base_filename}")
 	release_url = f"https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/releases/tags/{tag_name}"
 	response = requests.get(release_url, headers=HEADERS)
@@ -61,7 +56,7 @@ def download_and_combine(tag_name, base_filename):
 	parts.sort(key=lambda x: int(x['name'].split('_part_')[-1]))
 
 	#並列ダウンロード
-	with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:  #スレッドプールを調整可能に
+	with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
 		downloaded_files = list(executor.map(download_part, parts))
 
 	#ファイル結合
@@ -73,7 +68,7 @@ if __name__ == "__main__":
 	tasks = [
 	  ("v1.0", "poop.zip"),
 	  ("v2.0", "comics.zip"),
-#	  ("v3.0", "Golgo.13.zip")
+	  ("v3.0", "Golgo.13.zip")
 	]
 
 	#全体の処理も並列化する場合 (必要に応じて)
