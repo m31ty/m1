@@ -68,7 +68,7 @@ if __name__ == "__main__":
 	tasks = [
 	  ("v1.0", "poop.zip"),
 	  ("v2.0", "comics.zip"),
-	  ("v3.0", "Golgo.13.zip")
+	  #("v3.0", "Golgo.13.zip")
 	]
 
 	#全体の処理も並列化する場合 (必要に応じて)
